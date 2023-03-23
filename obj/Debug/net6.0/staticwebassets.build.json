@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "R8nKLFYxBGp1148HXGxd8U/kP/oO6rnnw7/mis5I+9Y=",
+  "Source": "testBackend",
+  "BasePath": "_content/testBackend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "nWAjFrpgAzm5H5j4H1MLDIiT7qopA6OYwserCLDBN0jCrt8CHrhQhTsxrWD1VNDlnTm2mCX3cozMvGc3EkZA6Q==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\damia\\Desktop\\studiaGWSH\\programowanie\\testBackend\\testBackend.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\damia\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.0\\microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\damia\\.nuget\\packages\\npgsql\\7.0.2\\npgsql.7.0.2.nupkg.sha512",
+    "C:\\Users\\damia\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
