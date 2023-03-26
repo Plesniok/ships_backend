@@ -1,6 +1,8 @@
 using Ships.Model;
 using Response.Service;
 using Ships.Service;
+using Microsoft.AspNetCore.Mvc;
+
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
@@ -14,9 +16,9 @@ ShipsService ShipsServiceInstance = new ShipsService();
 
 app.MapPost("/game", (CreateGame requestBody) => {
     
-    bool serviceStatus = ShipsServiceInstance
+    TableName serviceResult = ShipsServiceInstance
         .CreateGame(requestBody.playerName);
-    if(!serviceStatus){
+    if(serviceResult == new TableName()){
         return Results.Json(
             ResponseService.InfoResponse(
                 "Create game service unavailable",
@@ -26,7 +28,9 @@ app.MapPost("/game", (CreateGame requestBody) => {
         );
     }
     return Results.Json(
-        ResponseService.CreateSuccessBodyResponse(),
+        ResponseService.CreateGameResponse(
+            serviceResult.tableName
+        ),
         statusCode:200
     );
 });
@@ -58,6 +62,54 @@ app.MapPut("/player/two", (AddPlayer requestBody) => {
     }
     return Results.Json(
         ResponseService.CreateSuccessBodyResponse(),
+        statusCode:200
+    );
+});
+
+
+
+app.MapGet("/player/index", (string tableName, string playerName) => {
+    if(!ShipsServiceInstance.ifTableExist(tableName)){
+        return Results.Json(
+            ResponseService.InfoResponse(
+                "Game does not exist",
+                "10002"
+            ),
+            statusCode: 400
+        );
+    }
+
+    int? ifPlayerExists = ShipsServiceInstance.GetPlayerIdByName(
+        tableName,
+        playerName
+    );
+
+    if(ifPlayerExists == null){
+        return Results.Json(
+            ResponseService.InfoResponse(
+                "Get player id by name service unavailable",
+                "10003"
+            ),
+            statusCode: 503
+        );
+    }
+
+    if(ifPlayerExists == 0){
+        return Results.Json(
+            ResponseService.InfoResponse(
+                "Player does not exist in given Game",
+                "10002"
+            ),
+            statusCode: 400
+        );
+    }
+
+    
+
+    return Results.Json(
+        ResponseService.CreateGetPlayerByNameResponse(
+            ifPlayerExists
+        ),
         statusCode:200
     );
 });

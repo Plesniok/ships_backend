@@ -55,12 +55,38 @@ public class ShipsDB
         return result;
     }
     
+    public List<string> GetPlayerById(
+        string tableName, 
+        string playerName,
+        int playerId
+    ){
+
+        using var cmd = new NpgsqlCommand(
+            $@"SELECT player{playerId} FROM {tableName}_details 
+            WHERE player{playerId} = '{playerName}';", 
+            this.connection
+        );
+
+        using var reader = cmd.ExecuteReader();
+        List<string> result = new List<string>();
+    
+        while (reader.Read())
+        {
+            string playerNameRow = reader.GetString(0);
+            result.Add(
+                playerNameRow
+            );
+        }
+        return result;
+    }
+
     public void CreateGameInfo(string tableName){
         
         using var cmd = new NpgsqlCommand(
             $@"CREATE TABLE {tableName}_details (
                 player1 TEXT,
-                player2 TEXT
+                player2 TEXT,
+                is_locked BOOLEAN DEFAULT FALSE
             );", this.connection
         );
         cmd.ExecuteNonQuery();
@@ -70,9 +96,9 @@ public class ShipsDB
         
         using var cmd = new NpgsqlCommand(
             $@"CREATE TABLE {tableName}_ships (
-                player1 TEXT,
-                x INTEGER,
-                y INTEGER
+                player_id INTEGER NOT NULL,
+                x INTEGER NOT NULL,
+                y INTEGER NOT NULL
             );", this.connection
         );
         cmd.ExecuteNonQuery();
@@ -83,6 +109,15 @@ public class ShipsDB
         using var cmd = new NpgsqlCommand(
             $@"INSERT INTO {tableName}_details (player{playerIndex}) 
             VALUES ('{newPlayerName}');", this.connection
+        );
+        cmd.ExecuteNonQuery();
+    }
+
+    public void LockGame(string tableName){
+        
+        using var cmd = new NpgsqlCommand(
+            $@"UPDATE {tableName}_details SET is_locked = true;", 
+            this.connection
         );
         cmd.ExecuteNonQuery();
     }

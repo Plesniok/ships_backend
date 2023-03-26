@@ -9,7 +9,7 @@ public class ShipsService{
     public ShipsService(){
         
     }
-    public bool CreateGame(string playerName){
+    public TableName CreateGame(string playerName){
         try{
             TableName NewTableName = new TableName();
             NewTableName.tableName = "1";
@@ -31,11 +31,11 @@ public class ShipsService{
                 playerIndex
             );
             
-            return true;
+            return NewTableName;
         }
         catch(Exception err){
             Console.WriteLine(err.ToString());
-            return false;
+            return new TableName();
         }
     }
     public bool ifTableExist(string tableName){
@@ -53,6 +53,30 @@ public class ShipsService{
         }
     }
     
+    public int? GetPlayerIdByName(string tableName, string playerName){
+        try{
+            int[] playerIndexes = {1,2}; 
+            int correctIndex = 0;
+            
+            foreach (int id in playerIndexes){
+                List<string> ifPlayerExists = DatabaseInstance.GetPlayerById(
+                    tableName,
+                    playerName,
+                    id
+                );
+                if(ifPlayerExists.Count() > 0){
+                    correctIndex = id;
+                }
+            }
+
+
+            return correctIndex;
+        }
+        catch(Exception err){
+            Console.WriteLine(err.ToString());
+            return null;
+        }
+    }
     public bool UpdatePlayer(string tableName, string playerName){
         try{
             int playerIndex = 2;
@@ -61,6 +85,10 @@ public class ShipsService{
                 tableName,
                 playerName, 
                 playerIndex
+            );
+            
+            DatabaseInstance.LockGame(
+                tableName
             );
 
             return true;

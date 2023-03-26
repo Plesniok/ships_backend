@@ -8,7 +8,7 @@ class RandomScript{
     public static string GetRandomTableName(){
         int length = 10; // specify desired length of random string
         // define characters to be used in the random string
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        const string chars = "abcdefghijklmnopqrstuvwxyz";
 
         // create instance of Random class
         var random = new Random();

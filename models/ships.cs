@@ -21,6 +21,9 @@ public record AddPlayer
    public int ? name { get; set; }
  }
 
- 
+ public class PlayerName 
+ { 
+   public string ? name { get; set; }
+ }
 
  

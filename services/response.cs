@@ -13,6 +13,17 @@ public class ResponseService {
             ErrorCode = code
         };
     }
+
+    public static SuccessCreateGameResponse CreateGameResponse(string tableName){
+        return new SuccessCreateGameResponse(){
+            NewGameCode = tableName
+        };
+    }
     
+    public static SuccessGetPlayerByName CreateGetPlayerByNameResponse(int? playerIndex){
+        return new SuccessGetPlayerByName(){
+            playerIndex = playerIndex
+        };
+    }
 
 }
