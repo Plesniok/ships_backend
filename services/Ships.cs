@@ -9,7 +9,7 @@ public class ShipsService{
     public ShipsService(){
         
     }
-    public TableName CreateGame(string playerName){
+    public TableName CreateGame(string playerName, List<Point> ships){
         try{
             TableName NewTableName = new TableName();
             NewTableName.tableName = "1";
@@ -30,6 +30,14 @@ public class ShipsService{
                 playerName,
                 playerIndex
             );
+
+            foreach(Point ship in ships){
+                DatabaseInstance.AssignShip(
+                    ship,
+                    playerIndex,
+                    NewTableName.tableName
+                );
+            }
             
             return NewTableName;
         }
@@ -53,6 +61,18 @@ public class ShipsService{
         }
     }
     
+
+    public bool ifTableIsLocked(string tableName){
+        try{
+            
+
+            return DatabaseInstance.ifTableIsLocked(tableName);
+        }
+        catch(Exception err){
+            Console.WriteLine(err.ToString());
+            return false;
+        }
+    }
     public int? GetPlayerIdByName(string tableName, string playerName){
         try{
             int[] playerIndexes = {1,2}; 
@@ -77,7 +97,7 @@ public class ShipsService{
             return null;
         }
     }
-    public bool UpdatePlayer(string tableName, string playerName){
+    public bool UpdatePlayer(string tableName, string playerName, List<Point> ships){
         try{
             int playerIndex = 2;
 
@@ -90,6 +110,14 @@ public class ShipsService{
             DatabaseInstance.LockGame(
                 tableName
             );
+
+            foreach(Point ship in ships){
+                DatabaseInstance.AssignShip(
+                    ship,
+                    2,
+                    tableName
+                );
+            }
 
             return true;
         }
