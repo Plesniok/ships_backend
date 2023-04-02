@@ -55,6 +55,24 @@ public class ShipsDB
         return result;
     }
     
+    public bool ifTableIsLocked(string tableName){
+
+        using var cmd = new NpgsqlCommand(
+            $@"SELECT is_locked FROM {tableName}_details;", 
+            this.connection
+        );
+
+        using var reader = cmd.ExecuteReader();
+        bool ifTableIsLocked = false;
+        
+    
+        while (reader.Read())
+        {
+            bool is_locked = reader.GetBoolean(0);
+            ifTableIsLocked = is_locked;
+        }
+        return ifTableIsLocked;
+    }
     public List<string> GetPlayerById(
         string tableName, 
         string playerName,
@@ -98,7 +116,8 @@ public class ShipsDB
             $@"CREATE TABLE {tableName}_ships (
                 player_id INTEGER NOT NULL,
                 x INTEGER NOT NULL,
-                y INTEGER NOT NULL
+                y INTEGER NOT NULL,
+                available BOOLEAN DEFAULT TRUE
             );", this.connection
         );
         cmd.ExecuteNonQuery();
@@ -109,6 +128,15 @@ public class ShipsDB
         using var cmd = new NpgsqlCommand(
             $@"INSERT INTO {tableName}_details (player{playerIndex}) 
             VALUES ('{newPlayerName}');", this.connection
+        );
+        cmd.ExecuteNonQuery();
+    }
+
+    public void AssignShip(Point ship, int playerIndex, string tableName){
+        
+        using var cmd = new NpgsqlCommand(
+            $@"INSERT INTO {tableName}_ships (player_id, x, y) 
+            VALUES ({playerIndex}, {ship.x}, {ship.y});", this.connection
         );
         cmd.ExecuteNonQuery();
     }

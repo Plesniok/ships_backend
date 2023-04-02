@@ -16,8 +16,18 @@ ShipsService ShipsServiceInstance = new ShipsService();
 
 app.MapPost("/game", (CreateGame requestBody) => {
     
+    if(requestBody.ships.Count() > 10){
+        return Results.Json(
+            ResponseService.InfoResponse(
+                "player can have only 10 ships",
+                "10001"
+            ),
+            statusCode: 400
+        );
+    } 
+
     TableName serviceResult = ShipsServiceInstance
-        .CreateGame(requestBody.playerName);
+        .CreateGame(requestBody.playerName, requestBody.ships);
     if(serviceResult == new TableName()){
         return Results.Json(
             ResponseService.InfoResponse(
@@ -37,6 +47,16 @@ app.MapPost("/game", (CreateGame requestBody) => {
 
 app.MapPut("/player/two", (AddPlayer requestBody) => {
     
+    if(requestBody.ships.Count() > 10){
+        return Results.Json(
+            ResponseService.InfoResponse(
+                "player can have only 10 ships",
+                "10001"
+            ),
+            statusCode: 400
+        );
+    } 
+
     if(!ShipsServiceInstance.ifTableExist(requestBody.tableName)){
         return Results.Json(
             ResponseService.InfoResponse(
@@ -47,10 +67,22 @@ app.MapPut("/player/two", (AddPlayer requestBody) => {
         );
     }
 
+    if(ShipsServiceInstance.ifTableIsLocked(requestBody.tableName)){
+        return Results.Json(
+            ResponseService.InfoResponse(
+                "Game is locked",
+                "10002"
+            ),
+            statusCode: 400
+        );
+    }
+
     bool serviceStatus = ShipsServiceInstance.UpdatePlayer(
         requestBody.tableName,
-        requestBody.playerName
+        requestBody.playerName,
+        requestBody.ships
     );
+
     if(!serviceStatus){
         return Results.Json(
             ResponseService.InfoResponse(
