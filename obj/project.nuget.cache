@@ -1,11 +1,17 @@
 {
   "version": 2,
-  "dgSpecHash": "nWAjFrpgAzm5H5j4H1MLDIiT7qopA6OYwserCLDBN0jCrt8CHrhQhTsxrWD1VNDlnTm2mCX3cozMvGc3EkZA6Q==",
+  "dgSpecHash": "7rW97ez9GtYF9XN4Gs95WSLC/VR4y/7zwgzeuHwHntnZSUoZXKSyW36F5D8QwnHGSGMk576RN0CRTMFohgOIPg==",
   "success": true,
   "projectFilePath": "C:\\Users\\damia\\Desktop\\studiaGWSH\\programowanie\\testBackend\\testBackend.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\damia\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "C:\\Users\\damia\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.0\\microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\damia\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
     "C:\\Users\\damia\\.nuget\\packages\\npgsql\\7.0.2\\npgsql.7.0.2.nupkg.sha512",
+    "C:\\Users\\damia\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "C:\\Users\\damia\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "C:\\Users\\damia\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "C:\\Users\\damia\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512",
     "C:\\Users\\damia\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
   ],
   "logs": []

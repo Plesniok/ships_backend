@@ -5,7 +5,16 @@ using Microsoft.AspNetCore.Mvc;
 
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
 ShipsService ShipsServiceInstance = new ShipsService();
 // app.MapGet("/", () => {
 //     var response = new {
@@ -16,15 +25,25 @@ ShipsService ShipsServiceInstance = new ShipsService();
 
 app.MapPost("/game", (CreateGame requestBody) => {
     
-    if(requestBody.ships.Count() > 10){
+    if(requestBody.ships.Count() != 10){
         return Results.Json(
             ResponseService.InfoResponse(
-                "player can have only 10 ships",
+                "player must have 10 ships",
                 "10001"
             ),
             statusCode: 400
         );
-    } 
+    }
+
+    if(requestBody.ships.Count() != requestBody.ships.Distinct().Count()){
+        return Results.Json(
+            ResponseService.InfoResponse(
+                "Player ships are not unique",
+                "10001"
+            ),
+            statusCode: 400
+        );
+    }
 
     TableName serviceResult = ShipsServiceInstance
         .CreateGame(requestBody.playerName, requestBody.ships);
@@ -47,15 +66,25 @@ app.MapPost("/game", (CreateGame requestBody) => {
 
 app.MapPut("/player/two", (AddPlayer requestBody) => {
     
-    if(requestBody.ships.Count() > 10){
+    if(requestBody.ships.Count() != 10){
         return Results.Json(
             ResponseService.InfoResponse(
-                "player can have only 10 ships",
+                "player must have 10 ships",
                 "10001"
             ),
             statusCode: 400
         );
     } 
+
+    if(requestBody.ships.Count() != requestBody.ships.Distinct().Count()){
+        return Results.Json(
+            ResponseService.InfoResponse(
+                "Player ships are not unique",
+                "10001"
+            ),
+            statusCode: 400
+        );
+    }
 
     if(!ShipsServiceInstance.ifTableExist(requestBody.tableName)){
         return Results.Json(
@@ -142,6 +171,175 @@ app.MapGet("/player/index", (string tableName, string playerName) => {
         ResponseService.CreateGetPlayerByNameResponse(
             ifPlayerExists
         ),
+        statusCode:200
+    );
+});
+
+app.MapGet("/ship/get-all/available", (string tableName, string playerName) => {
+    if(!ShipsServiceInstance.ifTableExist(tableName)){
+        return Results.Json(
+            ResponseService.InfoResponse(
+                "Game does not exist",
+                "10002"
+            ),
+            statusCode: 400
+        );
+    }
+
+    int? ifPlayerExists = ShipsServiceInstance.GetPlayerIdByName(
+        tableName,
+        playerName
+    );
+
+    if(ifPlayerExists == null){
+        return Results.Json(
+            ResponseService.InfoResponse(
+                "Get player id by name service unavailable",
+                "10003"
+            ),
+            statusCode: 503
+        );
+    }
+
+    if(ifPlayerExists == 0){
+        return Results.Json(
+            ResponseService.InfoResponse(
+                "Player does not exist in given Game",
+                "10002"
+            ),
+            statusCode: 400
+        );
+    }
+
+    List<Point> ships = ShipsServiceInstance.GetPlayerAvailableShips(
+        tableName,
+        ifPlayerExists
+    );
+
+    return Results.Json(
+        ResponseService.GetPlayerShips(
+            ships
+        ),
+        statusCode:200
+    );
+});
+
+app.MapGet("/ship/get-all/not-available", (string tableName, string playerName) => {
+    if(!ShipsServiceInstance.ifTableExist(tableName)){
+        return Results.Json(
+            ResponseService.InfoResponse(
+                "Game does not exist",
+                "10002"
+            ),
+            statusCode: 400
+        );
+    }
+
+    int? ifPlayerExists = ShipsServiceInstance.GetPlayerIdByName(
+        tableName,
+        playerName
+    );
+
+    if(ifPlayerExists == null){
+        return Results.Json(
+            ResponseService.InfoResponse(
+                "Get player id by name service unavailable",
+                "10003"
+            ),
+            statusCode: 503
+        );
+    }
+
+    if(ifPlayerExists == 0){
+        return Results.Json(
+            ResponseService.InfoResponse(
+                "Player does not exist in given Game",
+                "10002"
+            ),
+            statusCode: 400
+        );
+    }
+
+    List<Point> ships = ShipsServiceInstance.GetPlayerNotAvailableShips(
+        tableName,
+        ifPlayerExists
+    );
+
+    return Results.Json(
+        ResponseService.GetPlayerShips(
+            ships
+        ),
+        statusCode:200
+    );
+});
+
+app.MapPut("/ship/destroy", (DestroyShip requestData) => {
+    Console.WriteLine("te");
+    if(!ShipsServiceInstance.ifTableExist(requestData.tableName)){
+        return Results.Json(
+            ResponseService.InfoResponse(
+                "Game does not exist",
+                "10002"
+            ),
+            statusCode: 400
+        );
+    }
+
+    int? ifPlayerExists = ShipsServiceInstance.GetPlayerIdByName(
+        requestData.tableName,
+        requestData.playerName
+    );
+
+    if(ifPlayerExists == null){
+        return Results.Json(
+            ResponseService.InfoResponse(
+                "Get player id by name service unavailable",
+                "10003"
+            ),
+            statusCode: 503
+        );
+    }
+
+    if(ifPlayerExists == 0){
+        return Results.Json(
+            ResponseService.InfoResponse(
+                "Player does not exist in given Game",
+                "10002"
+            ),
+            statusCode: 400
+        );
+    }
+    int? enemyPlayerId = ShipsServiceInstance.GetEnemyPlayer(
+        ifPlayerExists
+    );
+
+    int? shipsDestroyed = ShipsServiceInstance.DestroyEnemyShip(
+        requestData.tableName,
+        enemyPlayerId,
+        requestData.ship
+    );
+
+    if(shipsDestroyed == null){
+        return Results.Json(
+            ResponseService.InfoResponse(
+                "Destroy enemy ship service unavailable",
+                "10003"
+            ),
+            statusCode: 503
+        );
+    }
+    if(shipsDestroyed == 0){
+        return Results.Json(
+            ResponseService.InfoResponse(
+                "Ship not found",
+                "10003"
+            ),
+            statusCode: 400
+        );
+    }
+
+    return Results.Json(
+        ResponseService.CreateSuccessBodyResponse(),
         statusCode:200
     );
 });

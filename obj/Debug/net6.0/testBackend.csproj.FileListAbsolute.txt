@@ -21,3 +21,8 @@ C:\Users\damia\Desktop\studiaGWSH\programowanie\testBackend\obj\Debug\net6.0\tes
 C:\Users\damia\Desktop\studiaGWSH\programowanie\testBackend\obj\Debug\net6.0\ref\testBackend.dll
 C:\Users\damia\Desktop\studiaGWSH\programowanie\testBackend\bin\Debug\net6.0\Npgsql.dll
 C:\Users\damia\Desktop\studiaGWSH\programowanie\testBackend\obj\Debug\net6.0\testBackend.csproj.CopyComplete
+C:\Users\damia\Desktop\studiaGWSH\programowanie\testBackend\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\damia\Desktop\studiaGWSH\programowanie\testBackend\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\damia\Desktop\studiaGWSH\programowanie\testBackend\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\damia\Desktop\studiaGWSH\programowanie\testBackend\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\damia\Desktop\studiaGWSH\programowanie\testBackend\obj\Debug\net6.0\testBackend.MvcApplicationPartsAssemblyInfo.cs

@@ -97,6 +97,55 @@ public class ShipsService{
             return null;
         }
     }
+
+    public List<Point>? GetPlayerAvailableShips(string tableName, int? playerId){
+        try{
+            
+            List<Point> listOfPoints = DatabaseInstance.GetPlayerAvailableShips(
+                tableName,
+                playerId
+            );
+            
+            return listOfPoints;
+        }
+        catch(Exception err){
+            Console.WriteLine(err.ToString());
+            return null;
+        }
+    }
+
+    public List<Point>? GetPlayerNotAvailableShips(string tableName, int? playerId){
+        try{
+            
+            List<Point> listOfPoints = DatabaseInstance.GetPlayerNotAvailableShips(
+                tableName,
+                playerId
+            );
+            
+            return listOfPoints;
+        }
+        catch(Exception err){
+            Console.WriteLine(err.ToString());
+            return null;
+        }
+    }
+
+    public int? GetEnemyPlayer(int? playerId){
+        try{
+            
+            if(playerId == 1){
+                return 2;
+            }
+            if(playerId == 2){
+                return 1;
+            }
+            return 0;
+        }
+        catch(Exception err){
+            Console.WriteLine(err.ToString());
+            return null;
+        }
+    }
     public bool UpdatePlayer(string tableName, string playerName, List<Point> ships){
         try{
             int playerIndex = 2;
@@ -124,6 +173,23 @@ public class ShipsService{
         catch(Exception err){
             Console.WriteLine(err.ToString());
             return false;
+        }
+    }
+
+    public int? DestroyEnemyShip(string tableName, int? enemyPlayer, Point ship){
+        try{
+
+            int? destroyedShips = DatabaseInstance.DestroyShip(
+                tableName,
+                enemyPlayer,
+                ship
+            );
+
+            return destroyedShips;
+        }
+        catch(Exception err){
+            Console.WriteLine(err.ToString());
+            return null;
         }
     }
 }

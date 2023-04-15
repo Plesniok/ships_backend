@@ -37,4 +37,11 @@ public record AddPlayer
    public string ? name { get; set; }
  }
 
- 
+ public class DestroyShip 
+ { 
+   public string ? tableName { get; set; }
+
+   public string ? playerName { get; set; }
+   public Point ? ship { get; set; }
+   
+ }

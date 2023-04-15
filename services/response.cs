@@ -1,4 +1,5 @@
 namespace Response.Service;
+using Ships.Model;
 
 using Response.Model;
 
@@ -26,4 +27,9 @@ public class ResponseService {
         };
     }
 
+    public static SuccessGetPlayerShips GetPlayerShips(List<Point> ships){
+        return new SuccessGetPlayerShips(){
+            ships = ships
+        };
+    }
 }

@@ -98,6 +98,65 @@ public class ShipsDB
         return result;
     }
 
+    public List<Point> GetPlayerAvailableShips(
+        string tableName, 
+        int? playerId
+    ){
+
+        using var cmd = new NpgsqlCommand(
+            $@"SELECT x,y FROM {tableName}_ships 
+            WHERE player_id = {playerId}
+            AND available = TRUE;", 
+            this.connection
+        );
+
+        using var reader = cmd.ExecuteReader();
+        List<Point> result = new List<Point>();
+    
+        while (reader.Read())
+        {
+            Point shipPoint = 
+                new Point(){
+                    x = reader.GetInt32(0),
+                    y = reader.GetInt32(1)
+                };
+            result.Add(
+                shipPoint
+            );
+        }
+        return result;
+    }
+
+    public List<Point> GetPlayerNotAvailableShips(
+        string tableName, 
+        int? playerId
+    ){
+
+        using var cmd = new NpgsqlCommand(
+            $@"SELECT x,y FROM {tableName}_ships 
+            WHERE player_id = {playerId}
+            AND available = FALSE;", 
+            this.connection
+        );
+
+        using var reader = cmd.ExecuteReader();
+        List<Point> result = new List<Point>();
+    
+        while (reader.Read())
+        {
+            Point shipPoint = 
+                new Point(){
+                    x = reader.GetInt32(0),
+                    y = reader.GetInt32(1)
+                };
+            result.Add(
+                shipPoint
+            );
+        }
+        return result;
+    }
+    
+
     public void CreateGameInfo(string tableName){
         
         using var cmd = new NpgsqlCommand(
@@ -172,5 +231,22 @@ public class ShipsDB
                 );
             }
             return result;
-        } 
+        }
+    
+    public int DestroyShip(
+        string tableName, 
+        int? enemyPlayer,
+        Point ship
+    ){
+        
+        using var cmd = new NpgsqlCommand(
+            $@"UPDATE {tableName}_ships SET available = FALSE
+            WHERE x = {ship.x}
+            AND y = {ship.y}
+            AND player_id = {enemyPlayer}
+            AND available = TRUE;", 
+            this.connection
+        );
+        return cmd.ExecuteNonQuery();
     }
+}
