@@ -2,18 +2,29 @@ using Ships.Model;
 using Response.Service;
 using Ships.Service;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
+
+
 
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "Todo API", Description = "Keep track of your tasks", Version = "v1" });
+    });
 
 var app = builder.Build();
 
+
+
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Todo API V1");
+    });
 
 ShipsService ShipsServiceInstance = new ShipsService();
 // app.MapGet("/", () => {
